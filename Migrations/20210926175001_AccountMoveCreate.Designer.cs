@@ -3,15 +3,17 @@ using System;
 using AssetManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AssetManager.Migrations
 {
     [DbContext(typeof(AssetManagerDbContext))]
-    partial class AssetManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210926175001_AccountMoveCreate")]
+    partial class AccountMoveCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
