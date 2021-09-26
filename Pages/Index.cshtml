@@ -1,0 +1,65 @@
+@page
+@model AssetManager.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container mt-5">
+  <div class="bg-light border p-5 rounded-3">
+    <h1 class="display-4">Welcome to Northwind!</h1>
+    <p class="lead">We supply products to our customers.</p>
+    <hr/>
+    <h2>This is a Razor page.</h2>
+    <p>Today It's @Model.DayName!</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Code</th>
+          <th scope="col">Type</th>
+        </tr>
+      </thead>
+      <tbody>
+      @foreach (var account in Model.Accounts)
+      {
+        <tr>
+          <td>@account.Name</td>
+          <td>@account.Code</td>
+          <td>@account.Type.Label</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+    <div class="row">
+      <p>New Account</p>
+
+      <form method="POST">
+        <div class="mb-3 form-floating">
+          <input 
+            asp-for="Account.Name" 
+            class="form-control" 
+            placeholder="Name"
+          />
+          <label asp-for="Account.Name"></label>
+        </div>
+        <div class="mb-3 form-floating">
+          <input 
+            asp-for="Account.Code" 
+            class="form-control" 
+            placeholder="Code"
+          />
+          <label asp-for="Account.Code"></label>
+        </div>
+        <div class="mb-3 form-floating">
+          <select 
+            asp-for="AccountTypeInContext"
+            asp-items="Model.AccountTypeSelection"
+            name="type" 
+            class="form-select"
+            aria-label="Type"
+          ></select>
+          <label for="type">Type</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
