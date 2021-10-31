@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AssetManager.Pages
 {
@@ -14,14 +15,14 @@ namespace AssetManager.Pages
     public class IndexModel : PageModel
     {
 
-        public List<SelectListItem> AccountTypeSelection => 
-            AccountType.GetAll<AccountType>().Select(
+        public List<SelectListItem> AccountTypesSelection => 
+            AccountTypeSelection.GetAll<AccountTypeSelection>().Select(
                 (type) => new SelectListItem(type.Label, type.Label)
             ).ToList();
 
         public string DayName { get; private set; }
 
-        public DbSet<Account> Accounts { get; private set; }
+        public DbSet<Account> Accounts => _db.Accounts;
 
         [BindProperty]
         public Account Account { get; private set; }
@@ -34,20 +35,20 @@ namespace AssetManager.Pages
             _db = dbContext;
         }
 
+        public override void OnPageHandlerExecuting(PageHandlerExecutingContext context) {
+            ViewData["Title"] = "Home";
+        }
+
         public void OnGet()
         {
-            ViewData["Title"] = "Home";
 
             DayName = DateTime.Now.ToString("dddd");
-            Accounts = _db.Accounts;
         }
 
         public IActionResult OnPost()
         {
-            if (! ModelState.IsValid) {
-                OnGet();
+            if (! ModelState.IsValid) 
                 return Page();
-            }
             _db.Accounts.Add(Account);
             _db.SaveChanges();
             return RedirectToPage("/Index");

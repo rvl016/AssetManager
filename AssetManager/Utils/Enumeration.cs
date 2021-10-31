@@ -13,7 +13,6 @@ namespace AssetManager.Utils
 
         public string Label { get; init; }
 
-
         protected Enumeration(int id, string label) {
             Id = id;
             Label = label;

@@ -4,8 +4,8 @@
 
 <div class="container mt-5">
   <div class="bg-light border p-5 rounded-3">
-    <h1 class="display-4">Welcome to Northwind!</h1>
-    <p class="lead">We supply products to our customers.</p>
+    <h1 class="display-4">Welcome to your Finances Administration</h1>
+    <p class="lead">Some description here.</p>
     <hr/>
     <h2>This is a Razor page.</h2>
     <p>Today It's @Model.DayName!</p>
@@ -23,7 +23,7 @@
         <tr>
           <td>@account.Name</td>
           <td>@account.Code</td>
-          <td>@account.Type.Label</td>
+          <td>@account.Type</td>
         </tr>
       }
       </tbody>
@@ -51,7 +51,7 @@
         <div class="mb-3 form-floating">
           <select 
             asp-for="AccountTypeInContext"
-            asp-items="Model.AccountTypeSelection"
+            asp-items="Model.AccountTypesSelection"
             name="type" 
             class="form-select"
             aria-label="Type"

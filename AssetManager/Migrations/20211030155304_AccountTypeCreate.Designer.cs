@@ -3,20 +3,22 @@ using System;
 using AssetManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AssetManager.Migrations
 {
     [DbContext(typeof(AssetManagerDbContext))]
-    partial class AssetManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211030155304_AccountTypeCreate")]
+    partial class AccountTypeCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("AssetManager.Models.Accounting.Account", b =>
@@ -42,14 +44,15 @@ namespace AssetManager.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Accounts");
                 });
@@ -82,7 +85,7 @@ namespace AssetManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccountMove");
+                    b.ToTable("AccountMoves");
                 });
 
             modelBuilder.Entity("AssetManager.Models.Accounting.AccountMoveLine", b =>
@@ -119,6 +122,45 @@ namespace AssetManager.Migrations
                     b.ToTable("AccountMoveLines");
                 });
 
+            modelBuilder.Entity("AssetManager.Models.Accounting.AccountType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateUpdated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("AccountType");
+                });
+
+            modelBuilder.Entity("AssetManager.Models.Accounting.Account", b =>
+                {
+                    b.HasOne("AssetManager.Models.Accounting.AccountType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("AssetManager.Models.Accounting.AccountMoveLine", b =>
                 {
                     b.HasOne("AssetManager.Models.Accounting.Account", "Account")
@@ -130,7 +172,7 @@ namespace AssetManager.Migrations
                     b.HasOne("AssetManager.Models.Accounting.AccountMove", "Move")
                         .WithMany("MoveLines")
                         .HasForeignKey("MoveId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Account");
