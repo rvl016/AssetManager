@@ -42,7 +42,7 @@ namespace AssetManager.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int?>("TypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -147,14 +147,16 @@ namespace AssetManager.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("AccountType");
+                    b.ToTable("AccountTypes");
                 });
 
             modelBuilder.Entity("AssetManager.Models.Accounting.Account", b =>
                 {
                     b.HasOne("AssetManager.Models.Accounting.AccountType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
+                        .WithMany("Accounts")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Type");
                 });
@@ -186,6 +188,11 @@ namespace AssetManager.Migrations
             modelBuilder.Entity("AssetManager.Models.Accounting.AccountMove", b =>
                 {
                     b.Navigation("MoveLines");
+                });
+
+            modelBuilder.Entity("AssetManager.Models.Accounting.AccountType", b =>
+                {
+                    b.Navigation("Accounts");
                 });
 #pragma warning restore 612, 618
         }
