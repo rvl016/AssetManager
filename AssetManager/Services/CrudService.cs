@@ -6,12 +6,19 @@ using AssetManager.Models.Base;
 
 namespace AssetManager.Services {
 
-    public class CrudService<M> where M : BaseEntity {
+    public class CrudService<M> : ICrudService<M> where M : BaseEntity {
 
         protected readonly IRepository<M> _repository;
 
+        public bool DoCommitOnDispose { get; set; } = true;
+
         public CrudService(IRepository<M> repository) {
             _repository = repository;
+        }
+
+        ~CrudService() {
+            if (DoCommitOnDispose)
+                _repository.Commit();
         }
 
         public IEnumerable<M> GetAll() {
@@ -26,6 +33,13 @@ namespace AssetManager.Services {
             return _repository.GetById(id);
         }
 
+        public void CreateOrUpdate(M entity) {
+            if (entity.Id == 0)
+                Create(entity);
+            else
+                Update(entity);
+        }
+
         public void Create(M entity) {
             _repository.Create(entity);            
         }
@@ -37,6 +51,25 @@ namespace AssetManager.Services {
         public void Delete(M entity) {
             _repository.Delete(entity);
         }
+
+    }
+
+
+    public interface ICrudService<M> {
+    
+        IEnumerable<M> GetAll();
+
+        IQueryable<M> GetQuerySet();
+
+        M GetById(int id);
+
+        void CreateOrUpdate(M entity);
+
+        void Create(M entity);
+
+        void Update(M entity);
+
+        void Delete(M entity);
 
     }
 }

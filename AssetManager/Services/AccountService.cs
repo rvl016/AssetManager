@@ -1,15 +1,14 @@
-using System.Collections.Generic;
-using AssetManager.Data.Base;
+using AssetManager.Data.RepositoriesInterface;
 using AssetManager.Models.Accounting;
 
 
 namespace AssetManager.Services {
 
-    public class AccountService : CrudService<Account> {
+    public class AccountService : CrudService<Account>, IAccountService {
 
-        public AccountService(IRepository<Account> repository) : base(repository) {}
-
-        
+        public AccountService(IAccountRepository repository) : base(repository) {}
 
     }
+
+    public interface IAccountService : ICrudService<Account> {}
 }
