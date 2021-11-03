@@ -17,6 +17,8 @@ namespace AssetManager.Data
 
         public DbSet<AccountMoveLine> AccountMoveLines { get; set; }
 
+        public DbSet<AccountType> AccountTypes { get; set; }
+
         public AssetManagerDbContext() {}
 
         public AssetManagerDbContext(DbContextOptions<AssetManagerDbContext> options) 
@@ -28,6 +30,11 @@ namespace AssetManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Account>()
+                .HasOne(e => e.Type)
+                .WithMany(e => e.Accounts)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AccountType>()
                 .Property(e => e.Type)
@@ -46,11 +53,13 @@ namespace AssetManager.Data
             modelBuilder.Entity<AccountMoveLine>()
                 .HasOne(e => e.Account)
                 .WithMany(e => e.MoveLines)
+                .HasForeignKey(e => e.AccountId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AccountMoveLine>()
                 .HasOne(e => e.Move)
                 .WithMany(e => e.MoveLines)
+                .HasForeignKey(e => e.MoveId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

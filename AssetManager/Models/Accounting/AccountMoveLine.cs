@@ -9,10 +9,16 @@ namespace AssetManager.Models.Accounting
     public class AccountMoveLine : BaseEntity
     {
 
-        [Required]
-        public virtual AccountMove Move { get; set; }
+        public virtual int MoveId { get; set; }
 
         [Required]
+        [ForeignKey("MoveId")]
+        public virtual AccountMove Move { get; set; }
+
+        public virtual int AccountId { get; set; }
+
+        [Required]
+        [ForeignKey("AccountId")]
         public virtual Account Account { get; set; }
 
         [Column(TypeName = "decimal(21, 8)")]

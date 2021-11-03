@@ -19,6 +19,9 @@ namespace AssetManager.Models.Accounting
         [Column(TypeName = "varchar(50)")]
         public virtual AccountTypeSelection Type { get; set; }
 
+        [InverseProperty(nameof(Account.Type))]
+        public virtual ICollection<Account> Accounts { get; set; } = new HashSet<Account>();
+
     }
 
     public class AccountTypeSelection : Enumeration {

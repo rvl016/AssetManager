@@ -20,7 +20,6 @@ namespace AssetManager.Models.Accounting
         public virtual string Code { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(50)")]
         public virtual AccountType Type { get; set; }
 
         [InverseProperty(nameof(AccountMoveLine.Account))]
