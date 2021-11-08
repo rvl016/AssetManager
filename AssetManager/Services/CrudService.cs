@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AssetManager.Data.Base;
@@ -16,7 +17,8 @@ namespace AssetManager.Services {
             _repository = repository;
         }
 
-        ~CrudService() {
+        public void Dispose() {
+            // TODO: Find an alternative to Dispose
             if (DoCommitOnDispose)
                 _repository.Commit();
         }
@@ -55,7 +57,7 @@ namespace AssetManager.Services {
     }
 
 
-    public interface ICrudService<M> {
+    public interface ICrudService<M> : IDisposable {
     
         IEnumerable<M> GetAll();
 
