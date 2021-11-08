@@ -25,6 +25,10 @@ namespace AssetManager.Utils
             return GetAll<T>().First((e) => e.Label == label);
         }
 
+        public static T FromLabelOrDefault<T>(string label) where T : Enumeration {
+            return GetAll<T>().FirstOrDefault((e) => e.Label == label);
+        }
+
         public static IEnumerable<T> GetAll<T>() where T : Enumeration
         {
             return typeof(T).GetFields(
@@ -38,20 +42,16 @@ namespace AssetManager.Utils
             return Id.CompareTo(((Enumeration) obj).Id);
         }
 
-        public override bool Equals(object obj)
-        {
+        public override bool Equals(object obj) {
             if (obj is not Enumeration otherValue)
-            {
                 return false;
-            }
             var typeMatches = GetType().Equals(obj.GetType());
             var valueMatches = Id.Equals(otherValue.Id);
 
             return typeMatches && valueMatches;
         }
         
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             return Id.GetHashCode();
         }
     }
