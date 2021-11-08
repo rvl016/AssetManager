@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AssetManager.Data;
 using AssetManager.Config;
+using AssetManager.Utils;
 
 namespace AssetManager {
 
@@ -31,7 +32,12 @@ namespace AssetManager {
                 )
             );
             services.ConfigureRepositories();
-            services.AddRazorPages();
+            services.ConfigureModelServices();
+            
+            services.AddRazorPages().AddMvcOptions(options => {
+                options.ModelBinderProviders.Insert(0, new EnumerationBinderProvider());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
