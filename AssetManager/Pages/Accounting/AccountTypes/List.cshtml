@@ -1,5 +1,5 @@
-@page "/Accounting/Accounts"
-@model AssetManager.Pages.AccountListModel
+@page "/Accounting/AccountTypes"
+@model AssetManager.Pages.AccountTypeListModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
@@ -13,17 +13,15 @@
         <thead>
             <tr class="table-secondary">
                 <th scope="col">Name</th>
-                <th scope="col">Code</th>
                 <th scope="col">Type</th>
             </tr>
         </thead>
         <tbody>
-        @foreach (var account in Model.Accounts)
+        @foreach (var account in Model.AccountTypes)
         {
             <tr>
                 <td class="table-light">@account.Name</td>
-                <td class="table-light">@account.Code</td>
-                <td class="table-light">@account.Type</td>
+                <td class="table-light">@account.Type.Label</td>
             </tr>
         }
         </tbody>

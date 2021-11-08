@@ -1,7 +1,8 @@
-using AssetManager.Data;
+using System.Collections.Generic;
 using AssetManager.Models.Accounting;
+using AssetManager.Services;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace AssetManager.Pages
@@ -11,16 +12,16 @@ namespace AssetManager.Pages
     {
 
 
-        public DbSet<Account> Accounts => _db.Accounts;
+        public IEnumerable<Account> Accounts { get; private init; }
 
-        private AssetManagerDbContext _db;
+        private readonly IAccountService _accountService;
 
-        public AccountListModel(AssetManagerDbContext dbContext) {
-            _db = dbContext;
+        public AccountListModel(IAccountService accountService) {
+            _accountService = accountService;
+            Accounts = _accountService.GetAll();
         }
 
-        public void OnGet()
-        {
+        public override void OnPageHandlerExecuting(PageHandlerExecutingContext context) {
             ViewData["Title"] = "Accounts";
         }
 

@@ -1,0 +1,33 @@
+@page "/Accounting/Accounts/Detail/{AccountId?}"
+@model AssetManager.Pages.AccountFormModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="bg-light border rounded-3 p-4 mt-4">
+    <form method="POST">
+        <div class="mb-3 form-floating">
+            <input 
+                asp-for="Account.Name" 
+                class="form-control" 
+                placeholder="Name"
+            />
+            <label asp-for="Account.Name"></label>
+        </div>
+        <div class="mb-3 form-floating">
+            <input 
+                asp-for="Account.Code" 
+                class="form-control" 
+                placeholder="Code"
+            />
+            <label asp-for="Account.Code"></label>
+        </div>
+        <div class="mb-3 form-floating">
+            <select 
+                asp-for="Account.Type"
+                class="form-select"
+                aria-label="Type"
+            ></select>
+            <label asp-for="Account.Type"></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
